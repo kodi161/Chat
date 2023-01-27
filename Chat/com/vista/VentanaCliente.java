@@ -4,6 +4,10 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,7 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import controlador.Eventos;
-import modelo.SocketCliente;
+import modelo.ConexionCliente;
 
 public class VentanaCliente extends JFrame{
 
@@ -30,7 +34,20 @@ public class VentanaCliente extends JFrame{
 	public JButton botonEnviar;
 
 	public static void main(String[] args) {
-		new VentanaCliente();
+		VentanaCliente v1 = new VentanaCliente();
+		try {
+			Socket csocket = new Socket("localhost",8025);
+			ConexionCliente cc1 = ConexionCliente.getInstancia();
+			cc1.setSocket(csocket);
+			while(cc1.isConectado()) {
+				cc1.recibirMensajes(v1);
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("Ha habico algun problema con el host");
+		} catch (IOException e) {
+			System.out.println("FFFFFFFFFFFFFFFFFF");
+			e.printStackTrace();
+		}
 	}
 	public VentanaCliente() {
 		//Inicialización de componenetes de la ventana
@@ -50,9 +67,6 @@ public class VentanaCliente extends JFrame{
 		areaChat.setEditable(false);//Permite que no se puede editar
 		areaChat.setLineWrap(true);//Si llega alfinal del ancho del text area el texto se pone abajo
 		
-		//Creacion y ejecución del SocketCliente
-		SocketCliente sc = new SocketCliente();
-		
 		//Layout
 		GridBagConstraints gbc = new GridBagConstraints();
 		setLayout(new BorderLayout());
@@ -63,7 +77,7 @@ public class VentanaCliente extends JFrame{
 		addComponentesMensaje(jlMensaje, cajaMensaje, botonEnviar, p2, gbc);
 		
 		//Eventos
-		botonEnviar.addActionListener(new Eventos(sc, this));
+		botonEnviar.addActionListener(new Eventos(this));
 		
 		//Se añaden componentes a la ventana
 		add(p, BorderLayout.NORTH);
@@ -104,6 +118,10 @@ public class VentanaCliente extends JFrame{
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.gridwidth = GridBagConstraints.RELATIVE;
 		panel.add(boton);
+	}
+	
+	public void setTextChat(String str) {
+		areaChat.append(str+"\n");
 	}
 	
 	public String getTextNombreUsuario() {

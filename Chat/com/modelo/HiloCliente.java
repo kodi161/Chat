@@ -11,7 +11,6 @@ public class HiloCliente implements Runnable{
 	Socket csocket;
 	DataOutputStream dos;
 	DataInputStream dis;
-	String mensajeEnviado;
 	String mensajeRecibido;
 	String mensajeReal;
 	boolean conectado=true;
@@ -22,8 +21,12 @@ public class HiloCliente implements Runnable{
 		try {
 			dos = new DataOutputStream(csocket.getOutputStream());
 			dis = new DataInputStream(csocket.getInputStream());
+		}catch (SocketException e) {
+			System.out.println("Ha salido un cliente");
+			cierreConexion();
 		} catch (IOException e) {
 			e.printStackTrace();
+			cierreConexion();
 		}
 	}
 
@@ -31,9 +34,14 @@ public class HiloCliente implements Runnable{
 	//Hace que el servidor envie un mensaje al cliente
 	public void enviarMensaje(String me) {
 		try {
-			dos.writeUTF(me);
+			System.out.println("Se ha enviado el mensaje a todos");
+			dos.writeUTF(me.trim());
+		}catch (SocketException e) {
+			System.out.println("Ha salido un cliente");
+			cierreConexion();
 		} catch (IOException e) {
 			e.printStackTrace();
+			cierreConexion();
 		}
 	}
 
@@ -48,9 +56,10 @@ public class HiloCliente implements Runnable{
 			System.out.println(mensajeRecibido);
 		}catch (SocketException e) {
 			System.out.println("Ha salido un cliente");
-			conectado=false;
+			cierreConexion();
 		} catch (IOException e) {
 			e.printStackTrace();
+			cierreConexion();
 		}
 	}
 
@@ -78,19 +87,28 @@ public class HiloCliente implements Runnable{
 		}
 	}
 
-
+	//Método 5:
+	//Se cierra la conexion
+	public void cierreConexion() {
+		try {
+		csocket.close();
+		dis.close();
+		dos.close();
+		conectado = false;
+		} catch (Exception e) {
+			conectado=false;
+		}
+	}
+	
 	@Override
 	public synchronized void run() {
-		
 		while(conectado) {
 			//Comprueba si hay mensajes nuevos, TRUE es que si hay nuevos mensajes
 			if(MensajeChat.estadoMensaje==false) {
 				recibirMensaje();
-				MensajeChat.estadoMensaje=false;
-			}else {
 				enviarMensaje(MensajeChat.mensaje);
-			}
-			
+				MensajeChat.estadoMensaje=false;
+			}			
 		}
 	}
 
