@@ -46,7 +46,7 @@ public class ConexionCliente {
 		try {
 			dis = new DataInputStream(csocketCliente.getInputStream());
 			mensajeRecibido = dis.readUTF().trim();
-			vc.setTextChat(mensajeRecibido);
+			//vc.setTextChat(mensajeRecibido);
 		} catch (SocketException e) {
 			conectado = false;
 		}catch (IOException e) {
