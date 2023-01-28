@@ -93,9 +93,7 @@ public class HiloClienteComunicacion extends Thread{
 	public String palabrasClave(String mensaje) {
 		String mensajeEnviado = null;
 		switch (mensaje) {
-		case "ADIOS":
-			mensajeEnviado="ya no esta conectado";
-			return mensajeEnviado;
+		
 		case "HOLA":
 			mensajeEnviado="HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
@@ -104,6 +102,9 @@ public class HiloClienteComunicacion extends Thread{
 			return mensajeEnviado;
 		case "OTRA":
 			mensajeEnviado="<3 <3 <3 <3 <3 <3";
+			return mensajeEnviado;
+		case "ADIOS":
+			mensajeEnviado="ya no esta conectado";
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
