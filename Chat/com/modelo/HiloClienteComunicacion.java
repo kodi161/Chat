@@ -106,9 +106,6 @@ public class HiloClienteComunicacion extends Thread{
 		case "ADIOS":
 			mensajeEnviado="ya no esta conectado";
 			return mensajeEnviado;
-		case "CORAZON":
-			mensajeEnviado="♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥";
-			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
 			return mensajeEnviado;
