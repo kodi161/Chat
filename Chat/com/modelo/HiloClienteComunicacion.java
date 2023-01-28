@@ -106,6 +106,9 @@ public class HiloClienteComunicacion extends Thread{
 		case "ADIOS":
 			mensajeEnviado="ya no esta conectado";
 			return mensajeEnviado;
+		case "CORAZON":
+			mensajeEnviado="♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥";
+			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
 			return mensajeEnviado;
@@ -130,7 +133,7 @@ public class HiloClienteComunicacion extends Thread{
                     String resultado = nick+contenido;
                     System.out.println(resultado);
 					servidor.enviarMensajeTodos(resultado);
-					if(contenido.equals("ya nos esta conectado")) {
+					if(contenido.equals("ya no esta conectado")) {
 						socketCliente.close();
 					}
                 } catch (IOException e) {
