@@ -100,7 +100,7 @@ public class HiloClienteComunicacion extends Thread{
 			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
 		case "PIRAMIDE":
-			mensajeEnviado = ("\n* \n **\n *** \n*****\n");
+			mensajeEnviado = ("*****\n****\n***\n**\n*");
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
