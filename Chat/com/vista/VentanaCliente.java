@@ -106,9 +106,7 @@ public class VentanaCliente extends JFrame{
 	public void setBtnEntrar(JButton btnEntrar) {
 		this.btnEntrar = btnEntrar;
 	}
-	public static void main(String[] args) {
-		new VentanaCliente();
-	}
+
 	
 	//constructor
 	public VentanaCliente() {
@@ -153,6 +151,9 @@ public class VentanaCliente extends JFrame{
 		setVisible(true);
 				
 	}
-	
+	public void agregarLinea(String linea)
+	{
+		getJta().append(linea);
+	}
 	
 }
