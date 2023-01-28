@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import controlador.Eventos;
 import modelo.Cliente;
 
 
@@ -132,6 +133,14 @@ public class VentanaCliente extends JFrame{
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setBounds(90, 70, 100, 25);
 		
+		Eventos e = new Eventos(this);
+		
+		jbtn.addActionListener(e);
+		jtf.addActionListener(e);
+		jtNombre.addActionListener(e);
+		jta.setEditable(false);
+		
+		btnEntrar.addActionListener(e);
 		add(jlnombre);
 		add(jtNombre);
 		add(btnEntrar);
