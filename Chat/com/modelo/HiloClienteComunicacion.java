@@ -97,10 +97,10 @@ public class HiloClienteComunicacion extends Thread{
 			mensajeEnviado="ya no esta conectado";
 			return mensajeEnviado;
 		case "HOLA":
-			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
+			mensajeEnviado="HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
 		case "CORAZON":
-			mensajeEnviado = "<3 <3 <3 <3 <3 <3";
+			mensajeEnviado="<3 <3 <3 <3 <3 <3";
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
@@ -120,9 +120,8 @@ public class HiloClienteComunicacion extends Thread{
             } else {
                 try {
                     String mensaje = dis.readLine();
-                    mensaje.trim();
-                    String nick = obtenerNick(mensaje);
-                    String mensajeReal = obtenerMensajeReal(mensaje);
+                    String nick = obtenerNick(mensaje.trim());
+                    String mensajeReal = obtenerMensajeReal(mensaje.trim());
                     String contenido = palabrasClave(mensajeReal);
                     String resultado = nick+contenido;
                     System.out.println(resultado);
