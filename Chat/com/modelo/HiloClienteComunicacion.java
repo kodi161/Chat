@@ -18,7 +18,7 @@ public class HiloClienteComunicacion extends Thread{
 	private BufferedReader dis;
 	private String mensajeRecibido;
 	private String nickUsuario;
-	//Cliente cliente;
+	Cliente cliente;
 	private String mensajeReal;
 
 	//Constructor
@@ -92,7 +92,7 @@ public class HiloClienteComunicacion extends Thread{
 
 	//Permite que ciertas palabras claves tengan una cierta funcionalidad
 	public void palabrasClave() {
-		switch (mensajeRecibido) {
+		switch (mensajeReal) {
 		case "ADIOS":
 			mensajeRecibido=nickUsuario+"ya no esta conectado";
 			try {
