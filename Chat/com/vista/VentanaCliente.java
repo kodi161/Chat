@@ -153,9 +153,6 @@ public class VentanaCliente extends JFrame{
 		setVisible(true);
 				
 	}
-	public void agregarLinea(String linea)
-	{
-		jta.append(linea);
-	}
+	
 	
 }

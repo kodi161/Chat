@@ -46,7 +46,7 @@ public class Cliente
 							{
 								String mensaje = entradaDatos.readLine();
 
-								vc.agregarLinea(mensaje+"\n");
+								agregarLinea(mensaje+"\n");
 								//System.out.println("Mensaje entrante> " + mensaje);
 
 							}
@@ -90,11 +90,10 @@ public class Cliente
 	}
 
 
-
-
-
-
-
+	public void agregarLinea(String linea)
+	{
+		vc.getJta().append(linea);
+	}
 
 
 }
