@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 import vista.VentanaCliente;
 
@@ -46,7 +47,9 @@ public class ConexionCliente {
 			dis = new DataInputStream(csocketCliente.getInputStream());
 			mensajeRecibido = dis.readUTF().trim();
 			vc.setTextChat(mensajeRecibido);
-		} catch (IOException e) {
+		} catch (SocketException e) {
+			conectado = false;
+		}catch (IOException e) {
 			e.printStackTrace();
 			conectado=false;
 		}
@@ -58,11 +61,17 @@ public class ConexionCliente {
 		//Salida de datos
 		DataOutputStream dos;
 		try {
-			dos = new DataOutputStream(csocketCliente.getOutputStream());
-			this.mensajeEnviado = mensajeEnviado.trim();
-			this.nombreUsuario= nombreUsuario;
-			String mensajeYnombre = this.nombreUsuario+": "+this.mensajeEnviado;
-			dos.writeUTF(mensajeYnombre);
+			if (conectado && (csocketCliente != null)) {
+				dos = new DataOutputStream(csocketCliente.getOutputStream());
+				this.mensajeEnviado = mensajeEnviado.trim();
+				this.nombreUsuario= nombreUsuario;
+				String mensajeYnombre = this.nombreUsuario+": "+this.mensajeEnviado;
+				dos.writeUTF(mensajeYnombre);
+			}else {
+				System.out.println("No se ha podido enviar el mensaje");
+			}
+		} catch (SocketException e) {
+			System.out.println("El servidor no esta abierto");
 		} catch (IOException e) {
 			e.printStackTrace();
 			conectado=false;

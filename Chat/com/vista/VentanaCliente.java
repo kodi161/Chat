@@ -43,10 +43,9 @@ public class VentanaCliente extends JFrame{
 				cc1.recibirMensajes(v1);
 			}
 		} catch (UnknownHostException e) {
-			System.out.println("Ha habico algun problema con el host");
+			System.out.println("Ha habido algun problema con el host");
 		} catch (IOException e) {
-			System.out.println("FFFFFFFFFFFFFFFFFF");
-			e.printStackTrace();
+			System.out.println("No te has podido conectar al servidor");
 		}
 	}
 	public VentanaCliente() {
