@@ -101,7 +101,7 @@ public class HiloClienteComunicacion extends Thread{
 			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
 		case "CORAZON":
-			mensajeEnviado = "♥";
+			mensajeEnviado = "♥♥♥♥♥♥♥♥♥";
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
@@ -125,15 +125,11 @@ public class HiloClienteComunicacion extends Thread{
                     String mensajeReal = obtenerMensajeReal(mensaje);
                     String contenido = palabrasClave(mensajeReal);
                     String resultado = nick+contenido;
-                    if (resultado != null) {
-                        System.out.println(resultado);
-                        servidor.enviarMensajeTodos(resultado);
-                        if(contenido.equals("ya nos esta conectado")) {
-                        	socketCliente.close();
-                        }
-                    } else {
-                    	//No pasa nada
-                    }
+                    System.out.println(resultado);
+					servidor.enviarMensajeTodos(resultado);
+					if(contenido.equals("ya nos esta conectado")) {
+						socketCliente.close();
+					}
                 } catch (IOException e) {
                     try {
                         socketCliente.close();
