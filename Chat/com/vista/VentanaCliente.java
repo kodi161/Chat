@@ -7,20 +7,107 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import modelo.Cliente;
+
 
 public class VentanaCliente extends JFrame{
-
+	
+	//COMPONENETES VENTENA
 	private JTextArea jta;
 	private JScrollPane jsp;
 	private JButton jbtn;
 	private JTextField jtf;
 	private JLabel jlab;
-	//private Cliente cliente;
+	private Cliente cliente;
 	private String mensaje="";
 	private JLabel jlnombre;
 	private JTextField jtNombre;
 	private JButton btnEntrar;
 	
+	//GETTERS Y SETTERS
+	
+	public JTextArea getJta() {
+		return jta;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public void setJta(JTextArea jta) {
+		this.jta = jta;
+	}
+
+	public JScrollPane getJsp() {
+		return jsp;
+	}
+
+	public void setJsp(JScrollPane jsp) {
+		this.jsp = jsp;
+	}
+
+	public JButton getJbtn() {
+		return jbtn;
+	}
+
+	public void setJbtn(JButton jbtn) {
+		this.jbtn = jbtn;
+	}
+
+	public JTextField getJtf() {
+		return jtf;
+	}
+
+	public void setJtf(JTextField jtf) {
+		this.jtf = jtf;
+	}
+
+	public JLabel getJlab() {
+		return jlab;
+	}
+
+	public void setJlab(JLabel jlab) {
+		this.jlab = jlab;
+	}
+
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public JLabel getJlnombre() {
+		return jlnombre;
+	}
+
+	public void setJlnombre(JLabel jlnombre) {
+		this.jlnombre = jlnombre;
+	}
+
+	public JTextField getJtNombre() {
+		return jtNombre;
+	}
+
+	public void setJtNombre(JTextField jtNombre) {
+		this.jtNombre = jtNombre;
+	}
+
+	public JButton getBtnEntrar() {
+		return btnEntrar;
+	}
+
+	public void setBtnEntrar(JButton btnEntrar) {
+		this.btnEntrar = btnEntrar;
+	}
+	public static void main(String[] args) {
+		new VentanaCliente();
+	}
 	
 	//constructor
 	public VentanaCliente() {
@@ -57,4 +144,9 @@ public class VentanaCliente extends JFrame{
 		setVisible(true);
 				
 	}
+	public void agregarLinea(String linea)
+	{
+		jta.append(linea);
+	}
+	
 }
