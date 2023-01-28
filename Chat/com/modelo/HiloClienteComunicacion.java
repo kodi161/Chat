@@ -121,6 +121,7 @@ public class HiloClienteComunicacion extends Thread{
             } else {
                 try {
                     String mensaje = dis.readLine();
+                    mensaje.trim();
                     String nick = obtenerNick(mensaje);
                     String mensajeReal = obtenerMensajeReal(mensaje);
                     String contenido = palabrasClave(mensajeReal);
