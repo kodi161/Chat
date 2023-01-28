@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -23,8 +24,7 @@ public class HiloCliente extends Thread{
 			dos = new DataOutputStream(csocket.getOutputStream());
 			dis = new DataInputStream(csocket.getInputStream());
 		}catch (SocketException e) {
-			System.out.println("Ha salido un cliente");
-			cierreConexion();
+			System.out.println("Ha habido un problema con el socket");
 		} catch (IOException e) {
 			e.printStackTrace();
 			cierreConexion();
@@ -35,66 +35,49 @@ public class HiloCliente extends Thread{
 	public DataOutputStream getDataOutputStream() {
 		return dos;
 	}
-	//Método 1:
-	//Hace que el servidor envie un mensaje al cliente
-	public void enviarMensaje(String mensaje) {
-		try {
-			for (int i = 0; i < SocketServidorChat.arrayHiloClientes.length; i++) {
-				if(SocketServidorChat.arrayHiloClientes[i] != null &&
-						SocketServidorChat.arrayHiloClientes[i].isAlive()) {
-					SocketServidorChat.arrayHiloClientes[i].getDataOutputStream().writeUTF(mensaje);
-				}
-			}
-		}catch (SocketException e) {
-			cierreConexion();
-		} catch (IOException e) {
-			e.printStackTrace();
-			cierreConexion();
-		}
-	}
 
-	//Método 2:
+	//Método 1:
 	//Hace que el servidor reciba mensajes del cliente
 	public void recibirMensaje() {
 		try {
-			mensajeRecibido = dis.readUTF().trim();//Recibe el mensaje
+			mensajeRecibido = dis.readUTF();
+			System.out.println();
 			obtenerNick();
-			obtenerMensajeReal();//Método 3
-			palabrasClave();//Método 4
+			obtenerMensajeReal();
+			palabrasClave();
 			MensajeChat.mensajeActualizado(mensajeRecibido);
 			System.out.println(mensajeRecibido);
+		}catch (EOFException e) {
+			System.out.println("Ha habido algun problema al recibir el mensaje");
 		}catch (SocketException e) {
 			cierreConexion();
 		} catch (IOException e) {
 			e.printStackTrace();
-			cierreConexion();
 		}
 	}
-	//Método 3:
+	//Método 2:
 		//Obtiene el nick del usuario
 		public void obtenerNick() {
 			for (int i = 0; i < mensajeRecibido.length(); i++) {
 				if(mensajeRecibido.charAt(i)==':') {
 					nickUsuario = mensajeRecibido.substring(0, i);
-					System.out.println(nickUsuario);
 				}
 			}
 		}
 		
-	//Método 4:
+	//Método 3:
 	//Obtiene el mensaje que ha enviado el cliente pero sin su nick
 	public void obtenerMensajeReal() {
 		for (int i = 0; i < mensajeRecibido.length(); i++) {
 			if(mensajeRecibido.charAt(i)==':') {
-				mensajeReal = mensajeRecibido.substring(i+1);
-				System.out.println(mensajeReal);
+				mensajeReal = mensajeRecibido.substring(i+2);
 			}
 		}
 	}
 	
 	
 
-	//Metodo 5:
+	//Metodo 4:
 	//Permite que ciertas palabras claves tengan una cierta funcionalidad
 	public void palabrasClave() {
 		switch (mensajeReal) {
@@ -114,13 +97,13 @@ public class HiloCliente extends Thread{
 		}
 	}
 
-	//Método 6:
+	//Método 5:
 	//Se cierra la conexion
 	public void cierreConexion() {
 		try {
 			csocket.close();
-			dis.close();
 			dos.close();
+			dis.close();
 			conectado = false;
 			currentThread().join();
 			System.out.println("Se ha desconectado un cliente");
@@ -135,7 +118,6 @@ public class HiloCliente extends Thread{
 			//Comprueba si hay mensajes nuevos, TRUE es que si hay nuevos mensajes
 			if(MensajeChat.estadoMensaje==false) {
 				recibirMensaje();
-				enviarMensaje(MensajeChat.mensaje);
 				MensajeChat.estadoMensaje=false;
 			}			
 		}

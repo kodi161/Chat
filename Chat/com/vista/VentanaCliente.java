@@ -42,6 +42,7 @@ public class VentanaCliente extends JFrame{
 			while(cc1.isConectado()) {
 				cc1.recibirMensajes(v1);
 			}
+			csocket.close();
 		} catch (UnknownHostException e) {
 			System.out.println("Ha habido algun problema con el host");
 		} catch (IOException e) {
