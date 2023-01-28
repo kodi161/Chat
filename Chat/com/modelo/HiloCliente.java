@@ -24,7 +24,6 @@ public class HiloCliente extends Thread{
 			dos = new DataOutputStream(csocket.getOutputStream());
 			dis = new DataInputStream(csocket.getInputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -114,7 +113,9 @@ public class HiloCliente extends Thread{
 			dos.close();
 			dis.close();
 			conectado = false;
-			System.out.println("Se ha desconectado un cliente");
+			if(currentThread().isAlive()==false) {
+				System.out.println("Se ha desconectado un cliente");
+			}
 			
 		} catch (Exception e) {
 			conectado=false;
