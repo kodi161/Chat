@@ -92,7 +92,7 @@ public class Cliente
 
 	public void agregarLinea(String linea)
 	{
-		vc.getJta().append(linea);
+		this.vc.getJta().append(linea);
 	}
 
 
