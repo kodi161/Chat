@@ -8,18 +8,18 @@ import java.net.Socket;
 
 public class SocketServidorChat {
 	static int puerto = 8025;
-	static HiloCliente[] arrayHiloClientes;
+	static Thread[] arrayHiloClientes;
 
 	public static void main(String[] args) {
 		ServerSocket ssocketServidor = null;
 		Socket socketAceptado=null;
 		try {
 			ssocketServidor = new ServerSocket(puerto);
-			arrayHiloClientes = new HiloCliente[10];
+			arrayHiloClientes = new Thread[10];
 			do{
 				socketAceptado = ssocketServidor.accept();
 				System.out.println("Conectado el usuario con IP:"+socketAceptado.getInetAddress());
-				rellenarArrayHilos(new HiloCliente(socketAceptado));
+				rellenarArrayHilos(new Thread( new HiloCliente(socketAceptado)));
 
 			}while(ssocketServidor.isClosed() == false);
 		}catch (BindException e) {
@@ -30,12 +30,12 @@ public class SocketServidorChat {
 		} 
 	}
 
-	public static void rellenarArrayHilos(HiloCliente hilo) {
+	public static void rellenarArrayHilos(Thread hilo) {
 		for(int a = 0; a< arrayHiloClientes.length; a++) {
 			if(arrayHiloClientes[a] == null) {
 				System.out.println("Ha ingresado un usuario a la lista "+a);
 				arrayHiloClientes[a]= hilo;
-				arrayHiloClientes[a].start();;
+				arrayHiloClientes[a].start();
 				break;
 			}else{ 
 				if(arrayHiloClientes[a].isAlive()!= false) {

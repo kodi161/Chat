@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class HiloCliente extends Thread{
+public class HiloCliente implements Runnable{
 	//Atributos Simples
 	private Socket csocket;
 	private DataOutputStream dos;
@@ -21,7 +21,6 @@ public class HiloCliente extends Thread{
 	public HiloCliente(Socket sc) {
 		csocket=sc;
 		try {
-			dos = new DataOutputStream(csocket.getOutputStream());
 			dis = new DataInputStream(csocket.getInputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -38,15 +37,15 @@ public class HiloCliente extends Thread{
 	//Hace que el servidor envie un mensaje al cliente
 	public void enviarMensaje(String mensaje) {
 		try {
+			dos = new DataOutputStream(csocket.getOutputStream());
 			for (int i = 0; i < SocketServidorChat.arrayHiloClientes.length; i++) {
-				if(SocketServidorChat.arrayHiloClientes[i] != null &&
-						SocketServidorChat.arrayHiloClientes[i].isAlive() ) {
+				if(SocketServidorChat.arrayHiloClientes[i] != null ) {
 					System.out.println("Se ha enviado el mensaje al chat");
-					SocketServidorChat.arrayHiloClientes[i].getDataOutputStream().writeUTF(mensaje);
+					this.dos.writeUTF(mensaje);
 				}
 			}
 		}catch (SocketException e) {
-			e.printStackTrace();
+			cierreConexion();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -120,9 +119,8 @@ public class HiloCliente extends Thread{
 			dos.close();
 			dis.close();
 			conectado = false;
-			if (currentThread().isAlive()==false) {
-				System.out.println("Se ha desconectado un cliente");
-			}
+			System.out.println("Se ha desconectado un cliente");
+			
 		} catch (Exception e) {
 			conectado=false;
 		}
