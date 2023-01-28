@@ -102,6 +102,9 @@ public class HiloClienteComunicacion extends Thread{
 		case "CORAZON":
 			mensajeEnviado="<3 <3 <3 <3 <3 <3";
 			return mensajeEnviado;
+		case "OTRA":
+			mensajeEnviado="<3 <3 <3 <3 <3 <3";
+			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
 			return mensajeEnviado;
