@@ -73,7 +73,7 @@ public class HiloClienteComunicacion extends Thread{
 		String nickUsuario = null;
 		for (int i = 0; i < mensaje.length(); i++) {
 			if(mensaje.charAt(i)=='>') {
-				 nickUsuario = mensaje.substring(0, i);
+				 nickUsuario = mensaje.substring(0, i+1);
 				 return nickUsuario;
 			}
 		}
@@ -85,7 +85,7 @@ public class HiloClienteComunicacion extends Thread{
 		String mensajeReal = null;
 		for (int i = 0; i < mensaje.length(); i++) {
 			if(mensaje.charAt(i)=='>') {
-				mensajeReal = mensaje.substring(i+2);
+				mensajeReal = mensaje.substring(i+1);
 				return mensajeReal;
 			}
 		}
