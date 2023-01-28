@@ -8,18 +8,18 @@ import java.net.Socket;
 
 public class SocketServidorChat {
 	static int puerto = 8025;
-	static Thread[] arrayHiloClientes;
+	static HiloCliente[] arrayHiloClientes;
 
 	public static void main(String[] args) {
 		ServerSocket ssocketServidor = null;
 		Socket socketAceptado=null;
 		try {
 			ssocketServidor = new ServerSocket(puerto);
-			arrayHiloClientes = new Thread[10];
+			arrayHiloClientes = new HiloCliente[10];
 			do{
 				socketAceptado = ssocketServidor.accept();
 				System.out.println("Conectado el usuario con IP:"+socketAceptado.getInetAddress());
-				rellenarArrayHilos(new Thread( new HiloCliente(socketAceptado)));
+				rellenarArrayHilos(new HiloCliente(socketAceptado));
 
 			}while(ssocketServidor.isClosed() == false);
 		}catch (BindException e) {
@@ -30,7 +30,7 @@ public class SocketServidorChat {
 		} 
 	}
 
-	public static void rellenarArrayHilos(Thread hilo) {
+	public static void rellenarArrayHilos(HiloCliente hilo) {
 		for(int a = 0; a< arrayHiloClientes.length; a++) {
 			if(arrayHiloClientes[a] == null) {
 				System.out.println("Ha ingresado un usuario a la lista "+a);
@@ -39,17 +39,11 @@ public class SocketServidorChat {
 				break;
 			}else{ 
 				if(arrayHiloClientes[a].isAlive()!= false) {
+					System.out.println("Ha ingresado un usuario a la lista "+a);
 					arrayHiloClientes[a] = hilo;
 					arrayHiloClientes[a].start();
+					break;
 				}
-			}
-		}
-	}
-
-	public static void vaciarArrayHilos() {
-		for (int i = 0; i < arrayHiloClientes.length; i++) {
-			if(arrayHiloClientes[i].isAlive()!= false) {
-				arrayHiloClientes[i]=null;
 			}
 		}
 	}
