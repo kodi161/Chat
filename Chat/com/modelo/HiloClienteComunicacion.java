@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class HiloClienteComunicacion extends Thread{
 	//Atributos Simples
@@ -100,7 +101,7 @@ public class HiloClienteComunicacion extends Thread{
 			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
 		case "PIRAMIDE":
-			mensajeEnviado = ("*****\n****\n***\n**\n*");
+			mensajeEnviado = "\n* \n **\n *** \n*****\n";
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
