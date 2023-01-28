@@ -11,7 +11,7 @@ import vista.VentanaCliente;
 public class Cliente 
 {
 	//hacer una interfaz
-	public static int PORT = 3400;
+	public static int PORT = 8025;
 	public static String SERVER_LOCATION = "localhost";
 
 	private static Socket socketCliente;
