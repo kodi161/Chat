@@ -97,11 +97,11 @@ public class HiloClienteComunicacion extends Thread{
 		case "HOLA":
 			mensajeEnviado="HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
-		case "CORAZON":
-			mensajeEnviado="<3 <3 <3 <3 <3 <3";
+		case "CARA1":
+			mensajeEnviado=":)";
 			return mensajeEnviado;
-		case "OTRA":
-			mensajeEnviado="<3 <3 <3 <3 <3 <3";
+		case "CARA2":
+			mensajeEnviado=":(";
 			return mensajeEnviado;
 		case "ADIOS":
 			mensajeEnviado="ya no esta conectado";

@@ -61,10 +61,8 @@ public class Cliente
 			escuchador.start(); //arrancamos el hilo
 
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
