@@ -17,7 +17,9 @@ public class HiloClienteComunicacion extends Thread{
 	private DataOutputStream dos;
 	private BufferedReader dis;
 	private String mensajeRecibido;
+	private String nickUsuario;
 	//Cliente cliente;
+	private String mensajeReal;
 
 	//Constructor
 	
@@ -68,11 +70,11 @@ public class HiloClienteComunicacion extends Thread{
 	        }
 	        return false;
 	    }
-/*
+
 	//Obtiene el nick del usuario
 	public void obtenerNick() {
 		for (int i = 0; i < mensajeRecibido.length(); i++) {
-			if(mensajeRecibido.charAt(i)==':') {
+			if(mensajeRecibido.charAt(i)=='>') {
 				nickUsuario = mensajeRecibido.substring(0, i);
 			}
 		}
@@ -81,18 +83,18 @@ public class HiloClienteComunicacion extends Thread{
 	//Obtiene el mensaje que ha enviado el cliente pero sin su nick
 	public void obtenerMensajeReal() {
 		for (int i = 0; i < mensajeRecibido.length(); i++) {
-			if(mensajeRecibido.charAt(i)==':') {
+			if(mensajeRecibido.charAt(i)=='>') {
 				mensajeReal = mensajeRecibido.substring(i+2);
 			}
 		}
 	}
-*/
+
 
 	//Permite que ciertas palabras claves tengan una cierta funcionalidad
 	public void palabrasClave() {
 		switch (mensajeRecibido) {
 		case "ADIOS":
-			mensajeRecibido="ya no esta conectado";
+			mensajeRecibido=nickUsuario+"ya no esta conectado";
 			try {
 				socketCliente.close();
 			} catch (IOException e) {
@@ -101,10 +103,10 @@ public class HiloClienteComunicacion extends Thread{
 			}
 			break;
 		case "HOLA":
-			mensajeRecibido = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
+			mensajeRecibido = nickUsuario+"HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			break;
 		case "PIRAMIDE":
-			mensajeRecibido=(":\n* \n **\n *** \n*****\n");
+			mensajeRecibido= nickUsuario+":\n* \n **\n *** \n*****\n";
 			break;
 		default:
 			break;
@@ -123,10 +125,12 @@ public class HiloClienteComunicacion extends Thread{
             } else {
                 try {
                     String mensaje = dis.readLine();
+                    obtenerNick();
+                    obtenerMensajeReal();
                     mensajeRecibido = mensaje;
                     if (mensaje != null) {
-                        System.out.println( mensaje);
-                        servidor.enviarMensajeTodos(mensaje);
+                        System.out.println( mensajeRecibido);
+                        servidor.enviarMensajeTodos(mensajeRecibido);
                     } else {
                     	//No pasa nada
                     }
