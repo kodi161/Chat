@@ -9,13 +9,13 @@ import java.net.SocketException;
 
 public class HiloCliente extends Thread{
 	//Atributos Simples
-	Socket csocket;
-	DataOutputStream dos;
-	DataInputStream dis;
-	String mensajeRecibido;
-	String mensajeReal;
-	boolean conectado=true;
-	String nickUsuario;
+	private Socket csocket;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private String mensajeRecibido;
+	private String mensajeReal;
+	private boolean conectado=true;
+	private String nickUsuario;
 
 	//Constructor
 	public HiloCliente(Socket sc) {
@@ -23,25 +23,39 @@ public class HiloCliente extends Thread{
 		try {
 			dos = new DataOutputStream(csocket.getOutputStream());
 			dis = new DataInputStream(csocket.getInputStream());
-		}catch (SocketException e) {
-			System.out.println("Ha habido un problema con el socket");
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			cierreConexion();
 		}
+
 	}
-	
+
 	//Getter
 	public DataOutputStream getDataOutputStream() {
 		return dos;
 	}
-
+	//Método 1:
+	//Hace que el servidor envie un mensaje al cliente
+	public void enviarMensaje(String mensaje) {
+		try {
+			for (int i = 0; i < SocketServidorChat.arrayHiloClientes.length; i++) {
+				if(SocketServidorChat.arrayHiloClientes[i] != null &&
+						SocketServidorChat.arrayHiloClientes[i].isAlive() ) {
+					System.out.println("Se ha enviado el mensaje al chat");
+					SocketServidorChat.arrayHiloClientes[i].getDataOutputStream().writeUTF(mensaje);
+				}
+			}
+		}catch (SocketException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	//Método 1:
 	//Hace que el servidor reciba mensajes del cliente
 	public void recibirMensaje() {
 		try {
 			mensajeRecibido = dis.readUTF();
-			System.out.println();
 			obtenerNick();
 			obtenerMensajeReal();
 			palabrasClave();
@@ -49,6 +63,7 @@ public class HiloCliente extends Thread{
 			System.out.println(mensajeRecibido);
 		}catch (EOFException e) {
 			System.out.println("Ha habido algun problema al recibir el mensaje");
+			conectado=false;
 		}catch (SocketException e) {
 			cierreConexion();
 		} catch (IOException e) {
@@ -56,15 +71,15 @@ public class HiloCliente extends Thread{
 		}
 	}
 	//Método 2:
-		//Obtiene el nick del usuario
-		public void obtenerNick() {
-			for (int i = 0; i < mensajeRecibido.length(); i++) {
-				if(mensajeRecibido.charAt(i)==':') {
-					nickUsuario = mensajeRecibido.substring(0, i);
-				}
+	//Obtiene el nick del usuario
+	public void obtenerNick() {
+		for (int i = 0; i < mensajeRecibido.length(); i++) {
+			if(mensajeRecibido.charAt(i)==':') {
+				nickUsuario = mensajeRecibido.substring(0, i);
 			}
 		}
-		
+	}
+
 	//Método 3:
 	//Obtiene el mensaje que ha enviado el cliente pero sin su nick
 	public void obtenerMensajeReal() {
@@ -74,8 +89,8 @@ public class HiloCliente extends Thread{
 			}
 		}
 	}
-	
-	
+
+
 
 	//Metodo 4:
 	//Permite que ciertas palabras claves tengan una cierta funcionalidad
@@ -105,8 +120,9 @@ public class HiloCliente extends Thread{
 			dos.close();
 			dis.close();
 			conectado = false;
-			currentThread().join();
-			System.out.println("Se ha desconectado un cliente");
+			if (currentThread().isAlive()==false) {
+				System.out.println("Se ha desconectado un cliente");
+			}
 		} catch (Exception e) {
 			conectado=false;
 		}
@@ -114,13 +130,14 @@ public class HiloCliente extends Thread{
 
 	@Override
 	public synchronized void run() {
-		while(conectado) {
+		do{
 			//Comprueba si hay mensajes nuevos, TRUE es que si hay nuevos mensajes
 			if(MensajeChat.estadoMensaje==false) {
 				recibirMensaje();
+				enviarMensaje(MensajeChat.mensaje);
 				MensajeChat.estadoMensaje=false;
 			}			
-		}
+		}while(conectado);
 		cierreConexion();
 	}
 

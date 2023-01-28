@@ -47,7 +47,6 @@ public class ConexionCliente {
 			dis = new DataInputStream(csocketCliente.getInputStream());
 			mensajeRecibido = dis.readUTF().trim();
 			vc.setTextChat(mensajeRecibido);
-			dis.close();
 		} catch (SocketException e) {
 			conectado = false;
 		}catch (IOException e) {
@@ -68,7 +67,6 @@ public class ConexionCliente {
 				this.nombreUsuario= nombreUsuario;
 				String mensajeYnombre = this.nombreUsuario+": "+this.mensajeEnviado;
 				dos.writeUTF(mensajeYnombre);
-				dos.close();
 			}else {
 				System.out.println("No se ha podido enviar el mensaje");
 			}

@@ -39,9 +39,9 @@ public class VentanaCliente extends JFrame{
 			Socket csocket = new Socket("localhost",8025);
 			ConexionCliente cc1 = ConexionCliente.getInstancia();
 			cc1.setSocket(csocket);
-			while(cc1.isConectado()) {
+			do{
 				cc1.recibirMensajes(v1);
-			}
+			}while(cc1.isConectado());
 			csocket.close();
 		} catch (UnknownHostException e) {
 			System.out.println("Ha habido algun problema con el host");
