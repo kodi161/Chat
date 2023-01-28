@@ -125,7 +125,7 @@ public class HiloClienteComunicacion extends Thread{
                     String mensajeReal = obtenerMensajeReal(mensaje);
                     String contenido = palabrasClave(mensajeReal);
                     String resultado = nick+contenido;
-                    if (mensaje != null) {
+                    if (resultado != null) {
                         System.out.println(resultado);
                         servidor.enviarMensajeTodos(resultado);
                         if(contenido.equals("ya nos esta conectado")) {
