@@ -16,10 +16,7 @@ public class HiloClienteComunicacion extends Thread{
 	private ServidorChat servidor;
 	private DataOutputStream dos;
 	private BufferedReader dis;
-	private String mensajeRecibido;
-	private String nickUsuario;
 	Cliente cliente;
-	private String mensajeReal;
 
 	//Constructor
 	
@@ -72,44 +69,52 @@ public class HiloClienteComunicacion extends Thread{
 	    }
 
 	//Obtiene el nick del usuario
-	public void obtenerNick() {
-		for (int i = 0; i < mensajeRecibido.length(); i++) {
-			if(mensajeRecibido.charAt(i)=='>') {
-				nickUsuario = mensajeRecibido.substring(0, i);
+	public String obtenerNick(String mensaje) {
+		String nickUsuario = null;
+		for (int i = 0; i < mensaje.length(); i++) {
+			if(mensaje.charAt(i)=='>') {
+				 nickUsuario = mensaje.substring(0, i);
+				 return nickUsuario;
 			}
 		}
+		return nickUsuario;
 	}
 
 	//Obtiene el mensaje que ha enviado el cliente pero sin su nick
-	public void obtenerMensajeReal() {
-		for (int i = 0; i < mensajeRecibido.length(); i++) {
-			if(mensajeRecibido.charAt(i)=='>') {
-				mensajeReal = mensajeRecibido.substring(i+2);
+	public String obtenerMensajeReal(String mensaje) {
+		String mensajeReal = null;
+		for (int i = 0; i < mensaje.length(); i++) {
+			if(mensaje.charAt(i)=='>') {
+				mensajeReal = mensaje.substring(i+2);
+				return mensajeReal;
 			}
 		}
+		return mensajeReal;
 	}
 
 
 	//Permite que ciertas palabras claves tengan una cierta funcionalidad
-	public void palabrasClave() {
-		switch (mensajeReal) {
+	public String palabrasClave(String mensaje) {
+		String mensajeEnviado = null;
+		switch (mensaje) {
 		case "ADIOS":
-			mensajeRecibido=nickUsuario+"ya no esta conectado";
+			mensajeEnviado="ya no esta conectado";
 			try {
 				socketCliente.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			break;
+			return mensajeEnviado;
 		case "HOLA":
-			mensajeRecibido = nickUsuario+"HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
-			break;
+			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
+			return mensajeEnviado;
 		case "PIRAMIDE":
-			mensajeRecibido= nickUsuario+":\n* \n **\n *** \n*****\n";
-			break;
+			mensaje = ":\n* \n **\n *** \n*****\n";
+			return mensajeEnviado;
 		default:
-			break;
+			mensajeEnviado=mensaje;
+			return mensajeEnviado;
 		}
 	}
 
@@ -125,12 +130,13 @@ public class HiloClienteComunicacion extends Thread{
             } else {
                 try {
                     String mensaje = dis.readLine();
-                    obtenerNick();
-                    obtenerMensajeReal();
-                    mensajeRecibido = mensaje;
+                    String nick = obtenerNick(mensaje);
+                    String mensajeReal = obtenerMensajeReal(mensaje);
+                    String contenido = palabrasClave(mensajeReal);
+                    String resultado = nick+contenido;
                     if (mensaje != null) {
-                        System.out.println( mensajeRecibido);
-                        servidor.enviarMensajeTodos(mensajeRecibido);
+                        System.out.println(resultado);
+                        servidor.enviarMensajeTodos(resultado);
                     } else {
                     	//No pasa nada
                     }
