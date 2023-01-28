@@ -99,18 +99,12 @@ public class HiloClienteComunicacion extends Thread{
 		switch (mensaje) {
 		case "ADIOS":
 			mensajeEnviado="ya no esta conectado";
-			try {
-				socketCliente.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return mensajeEnviado;
 		case "HOLA":
 			mensajeEnviado = "HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
 		case "PIRAMIDE":
-			mensaje = ":\n* \n **\n *** \n*****\n";
+			mensaje = ("\n* \n **\n *** \n*****\n");
 			return mensajeEnviado;
 		default:
 			mensajeEnviado=mensaje;
@@ -137,6 +131,9 @@ public class HiloClienteComunicacion extends Thread{
                     if (mensaje != null) {
                         System.out.println(resultado);
                         servidor.enviarMensajeTodos(resultado);
+                        if(contenido.equals("ya nos esta conectado")) {
+                        	socketCliente.close();
+                        }
                     } else {
                     	//No pasa nada
                     }
