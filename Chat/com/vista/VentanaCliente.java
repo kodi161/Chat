@@ -162,15 +162,6 @@ public class VentanaCliente extends JFrame{
 
 	}
 
-	//GridbagLayout configura la ventana del principio
-	public void addComponenetesPanel(JPanel panel,
-			Object obj, GridBagConstraints gbc) {
-		gbc.gridwidth = GridBagConstraints.CENTER;
-		gbc.gridheight = GridBagConstraints.REMAINDER;
-		panel.add((Component) obj);
-	}
-
-
 	//Permite añadir texto al textare de la venta del usuario
 	public void agregarLinea(String linea)
 	{
