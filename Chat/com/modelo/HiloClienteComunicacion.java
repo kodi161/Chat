@@ -5,8 +5,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-
+/*
+ * Seguramente el nombre no explique bien lo que hace esta clase
+ * Lo primero esta clase representa un hilo al extender de Thread
+ * Esta clase está pensada para permitir la comunicación entre el Servidor
+ * y un cliente.
+ * Recibe los datos del cliente y los envia
+ * Cada cliente que se conecte  tendra una clase de estas asociado a él.
+ * No puedes enviar 
+ */
 public class HiloClienteComunicacion extends Thread{
+
 	//Atributos Simples
 	private Socket socketCliente;
 	private ServidorChat servidor;
@@ -14,17 +23,14 @@ public class HiloClienteComunicacion extends Thread{
 	private BufferedReader dis;
 	Cliente cliente;
 
-	//Constructor
-	
-	//Getter
-	public DataOutputStream getDataOutputStream() {
-		return dos;
-	}
+
+
+	//CONSTRUCTOR
 	public HiloClienteComunicacion(Socket socketCliente, ServidorChat servidor) {
 		super();
 		this.socketCliente = socketCliente;
 		this.servidor = servidor;
-		
+
 		try {
 			dis = new BufferedReader(new InputStreamReader(this.socketCliente.getInputStream()));
 
@@ -33,44 +39,50 @@ public class HiloClienteComunicacion extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	 public Socket getSocketCliente() {
-	        return socketCliente;
-	    }
 
-	    public void setSocketCliente(Socket sc) {
-	        socketCliente = sc;
-	    }
+	//GETTERS Y SETTERS
+	public DataOutputStream getDataOutputStream() {
+		return dos;
+	}
+	public Socket getSocketCliente() {
+		return socketCliente;
+	}
 
-	    public ServidorChat getServidor() {
-	        return servidor;
-	    }
+	public void setSocketCliente(Socket sc) {
+		socketCliente = sc;
+	}
 
-	    public void setServidorChat(ServidorChat servidor) {
-	        this.servidor = servidor;
-	    }
+	public ServidorChat getServidor() {
+		return servidor;
+	}
 
-	    public boolean enviarMensaje(String mensaje) {
-	        if (socketCliente.isClosed()==false) {
-	            try {
-	                dos.writeBytes( mensaje + "\n");
-	                return true;
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	                return false;
-	            }
-	        }
-	        return false;
-	    }
+	public void setServidorChat(ServidorChat servidor) {
+		this.servidor = servidor;
+	}
+
+	//Envia un mensaje a un cliente y un boolean para saber si ha habido algun problema
+	public boolean enviarMensaje(String mensaje) {
+		if (socketCliente.isClosed()==false) {
+			try {
+				dos.writeBytes( mensaje + "\n");
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return false;
+	}
 
 	//Obtiene el nick del usuario
 	public String obtenerNick(String mensaje) {
 		String nickUsuario = null;
 		for (int i = 0; i < mensaje.length(); i++) {
 			if(mensaje.charAt(i)=='>') {
-				 nickUsuario = mensaje.substring(0, i+1);
-				 return nickUsuario;
+				nickUsuario = mensaje.substring(0, i+1);
+				return nickUsuario;
 			}
 		}
 		return nickUsuario;
@@ -93,7 +105,7 @@ public class HiloClienteComunicacion extends Thread{
 	public String palabrasClave(String mensaje) {
 		String mensajeEnviado = null;
 		switch (mensaje) {
-		
+
 		case "HOLA":
 			mensajeEnviado="HOOLAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!";
 			return mensajeEnviado;
@@ -116,32 +128,32 @@ public class HiloClienteComunicacion extends Thread{
 	@Override
 	public void run() {
 		super.run();
-        boolean activo = true;
-        while (activo) {
-            if (socketCliente.isClosed()) {
-                activo = false;
-                continue;
-            } else {
-                try {
-                    String mensaje = dis.readLine();
-                    String nick = obtenerNick(mensaje.trim());
-                    String mensajeReal = obtenerMensajeReal(mensaje.trim());
-                    String contenido = palabrasClave(mensajeReal);
-                    String resultado = nick+contenido;
-                    System.out.println(resultado);
+		boolean activo = true;
+		while (activo) {
+			if (socketCliente.isClosed()) {
+				activo = false;
+				continue;
+			} else {
+				try {
+					String mensaje = dis.readLine();//Recibimos el mensaje
+					String nick = obtenerNick(mensaje.trim());//Guardamos el nick
+					String mensajeReal = obtenerMensajeReal(mensaje.trim());//Obtenemos el mensaje sin nick
+					String contenido = palabrasClave(mensajeReal);//Capatmos palabras claves y devolvemos una string
+					String resultado = nick+contenido;//Mensaje final
+					System.out.println(resultado);
 					servidor.enviarMensajeTodos(resultado);
 					if(contenido.equals("ya no esta conectado")) {
 						socketCliente.close();
 					}
-                } catch (IOException e) {
-                    try {
-                        socketCliente.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }
+				} catch (IOException e) {
+					try {
+						socketCliente.close();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 }

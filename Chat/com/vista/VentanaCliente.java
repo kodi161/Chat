@@ -1,8 +1,11 @@
 package vista;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -12,8 +15,9 @@ import modelo.Cliente;
 
 
 public class VentanaCliente extends JFrame{
-	
-	//COMPONENETES VENTENA
+
+	private static final long serialVersionUID = 1L;//Para que no ponga un aviso eclipse, se puede quitar
+	//COMPONENTES VENTENA
 	private JTextArea jta;
 	private JScrollPane jsp;
 	private JButton jbtn;
@@ -24,9 +28,11 @@ public class VentanaCliente extends JFrame{
 	private JLabel jlnombre;
 	private JTextField jtNombre;
 	private JButton btnEntrar;
-	
+
 	//GETTERS Y SETTERS
-	
+	/*
+	 * Son eseciales para obtener o establecer datos en la ventana del cliente	
+	 */
 	public JTextArea getJta() {
 		return jta;
 	}
@@ -103,57 +109,72 @@ public class VentanaCliente extends JFrame{
 		return btnEntrar;
 	}
 
-	public void setBtnEntrar(JButton btnEntrar) {
-		this.btnEntrar = btnEntrar;
-	}
-
-	
 	//constructor
 	public VentanaCliente() {
-		//se inicializan componentes que se agregaran en la interfaz
+		/*
+		 * Se inicializan componentes que se agregaran en la interfaz
+		 * y configuramos los atributos de los componentes
+		 */
+
 		jlnombre = new JLabel("Ingrese su nombre");
 		jlnombre.setBounds(90, 10, 200, 30);
-		
+
 		jtNombre = new  JTextField();
 		jtNombre.setBounds(50, 40, 200, 25);
-		
+
 		jta = new JTextArea(20,20);
-	
+		jta.setLineWrap(true);//El texto se adapta al textarea
+		jta.setEditable(false);
+
 		jbtn = new JButton("Enviar");
-		
+
 		jtf = new JTextField(20);
 		jlab = new JLabel("Ingrese texto y luego oprima cambiar");
-		
-		jsp = new JScrollPane(jta,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		setLayout(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
+		jsp = new JScrollPane(jta,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setBounds(90, 70, 100, 25);
-		
+
+		//Layout
+		setLayout(null);
+
+
+		//Eventos
 		Eventos e = new Eventos(this);
-		
+
 		jbtn.addActionListener(e);
 		jtf.addActionListener(e);
 		jtNombre.addActionListener(e);
-		jta.setEditable(false);
-		
 		btnEntrar.addActionListener(e);
+
+		//Componenetes que se añaden al crear la ventana
 		add(jlnombre);
 		add(jtNombre);
 		add(btnEntrar);
-		
-		
+
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Cliente");
 		setSize(300, 150);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-				
+
 	}
+
+	//GridbagLayout configura la ventana del principio
+	public void addComponenetesPanel(JPanel panel,
+			Object obj, GridBagConstraints gbc) {
+		gbc.gridwidth = GridBagConstraints.CENTER;
+		gbc.gridheight = GridBagConstraints.REMAINDER;
+		panel.add((Component) obj);
+	}
+
+
+	//Permite añadir texto al textare de la venta del usuario
 	public void agregarLinea(String linea)
 	{
 		getJta().append(linea);
 	}
-	
+
 }

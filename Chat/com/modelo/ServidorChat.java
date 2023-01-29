@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 
 public class ServidorChat {
+
 	public final static int puerto = 8025;
 	private ArrayList<HiloClienteComunicacion> arrayHiloCliente;
 	private ServerSocket socketEntrada;
@@ -23,7 +24,7 @@ public class ServidorChat {
 				System.out.println("-------Conectado------");
 				arrayHiloCliente.add(new HiloClienteComunicacion(cliente, this));
 				arrayHiloCliente.get(arrayHiloCliente.size() -1).start();;
-				
+
 				for (int i = 0; i < arrayHiloCliente.size(); i++) {
 					if (arrayHiloCliente.get(i).isAlive()==false) {
 						arrayHiloCliente.remove(i);
@@ -36,13 +37,13 @@ public class ServidorChat {
 			System.out.println("Problema 1");
 			e.printStackTrace();
 		} finally {
-			 try {
-	                if (socketEntrada != null) {
-	                    socketEntrada.close();
-	                }
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
+			try {
+				if (socketEntrada != null) {
+					socketEntrada.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	public void enviarMensajeTodos(String mensaje) {
@@ -54,7 +55,7 @@ public class ServidorChat {
 					iterator.remove();
 				}
 			}
-			
+
 		}
 	}
 }
