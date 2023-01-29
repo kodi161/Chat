@@ -139,6 +139,7 @@ public class HiloClienteComunicacion extends Thread{
 					String mensaje = dis.readLine();//Recibimos el mensaje
 					String nick = obtenerNick(mensaje.trim());//Guardamos el nick
 					String mensajeReal = obtenerMensajeReal(mensaje.trim());//Obtenemos el mensaje sin nick
+					System.out.println("Mensaje recibido: "+mensajeReal);
 					String contenido = palabrasClave(mensajeReal);//Capatmos palabras claves y devolvemos una string
 					String resultado = nick+contenido;//Mensaje final
 					System.out.println(resultado);
