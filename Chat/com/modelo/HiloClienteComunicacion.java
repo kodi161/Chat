@@ -10,9 +10,10 @@ import java.net.Socket;
  * Lo primero esta clase representa un hilo al extender de Thread
  * Esta clase está pensada para permitir la comunicación entre el Servidor
  * y un cliente.
- * Recibe los datos del cliente y los envia
+ * Recibe los datos del cliente, pero utiliza el método del servidor que envia el mensaje 
+ * al resto de clientes
  * Cada cliente que se conecte  tendra una clase de estas asociado a él.
- * No puedes enviar 
+ * 
  */
 public class HiloClienteComunicacion extends Thread{
 
