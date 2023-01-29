@@ -46,6 +46,8 @@ public class ServidorChat {
 			}
 		}
 	}
+	
+	//Envia un mensaje a todos los clientes conectados que se han almacenado
 	public void enviarMensajeTodos(String mensaje) {
 		for (Iterator<HiloClienteComunicacion> iterator = arrayHiloCliente.iterator(); iterator.hasNext();) {
 			HiloClienteComunicacion hiloCliente = (HiloClienteComunicacion) iterator.next();
