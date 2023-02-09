@@ -163,8 +163,7 @@ public class VentanaCliente extends JFrame{
 	}
 
 	//Permite añadir texto al textare de la venta del usuario
-	public void agregarLinea(String linea)
-	{
+	public void agregarLinea(String linea){
 		getJta().append(linea);
 	}
 
